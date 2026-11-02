@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smartpoly Java</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap">
+<style>
+:root{--s1:#78c3f0;--s2:#e1f2fc;--gr:#165c38;--dg:#0e3e28;--go:#ffd23f;--or:#b5470f;--cr:#fff8e1;--pa:#d7e2d0;--ink:#0e3e28;--wh:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#0b2540;--s2:#1b4a63;--gr:#2a8a5a;--dg:#0b2c1d;--cr:#1b2c24;--pa:#2b4337;--ink:#f1f6ec;--wh:#13221a}}
+:root[data-theme="dark"]{--s1:#0b2540;--s2:#1b4a63;--gr:#2a8a5a;--dg:#0b2c1d;--cr:#1b2c24;--pa:#2b4337;--ink:#f1f6ec;--wh:#13221a}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 20%,#fff8 0 60px,#0000 62px),radial-gradient(circle at 85% 12%,#fff8 0 80px,#0000 82px),linear-gradient(var(--s1),var(--s2));background-attachment:fixed;color:var(--ink);font-family:Poppins,"Segoe UI",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:10px 8px 24px}
+.ban{background:var(--dg);border:4px solid var(--go);border-radius:28px;padding:6px 24px 10px;text-align:center;box-shadow:0 6px 0 #0004;max-width:96vw}
+.ban small{display:block;color:#fff;font-weight:700;font-size:clamp(11px,3vw,16px);letter-spacing:.12em}
+.ban h1{margin:0;font-weight:800;font-size:clamp(32px,10vw,64px);line-height:1;color:var(--go);-webkit-text-stroke:6px #082a1b;paint-order:stroke fill;text-shadow:0 4px 0 #082a1b}
+.ban em{display:inline-block;background:var(--or);color:#fff;border-radius:99px;padding:1px 16px;font-style:normal;font-weight:700;font-size:clamp(11px,3vw,16px);margin-top:4px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+button{font:inherit;font-weight:800;cursor:pointer;border:0;border-radius:14px;padding:9px 16px;background:var(--gr);color:#fff;box-shadow:0 4px 0 #0005}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #0005}button:focus-visible{outline:3px solid var(--go);outline-offset:2px}
+button.o{background:var(--or)}button.g{background:var(--go);color:#0e3e28}button.n{background:var(--pa);color:var(--dg);box-shadow:0 4px 0 #0003}
+#board{display:grid;grid-template:repeat(7,1fr)/repeat(7,1fr);gap:4px;width:min(96vw,640px);aspect-ratio:1;background:#9db39a;padding:4px;border-radius:20px;border:6px solid var(--wh);box-shadow:0 12px 30px #0006}
+.c{border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:2px;line-height:1.05;font-weight:800;font-size:clamp(7px,2vw,13px);background:var(--pa);color:var(--ink)}
+.c small{font-weight:500;font-size:.72em;opacity:.9;margin-top:2px}
+.c .ic{font-size:clamp(14px,4.6vw,30px);line-height:1;margin-bottom:2px}
+.ch{background:var(--or);color:#fff}.su{background:var(--gr);color:#fff}.st,.fi{background:var(--go);color:#0e3e28}
+.ch .ic{background:#fff;color:var(--or);border-radius:50%;width:1.2em;height:1.2em;font-size:clamp(12px,4vw,26px);display:grid;place-items:center}
+.su .ic{color:var(--go)}
+.pw{position:absolute;bottom:2px;display:flex;gap:1px;flex-wrap:wrap;justify-content:center}
+.pw i{width:clamp(10px,2.8vw,18px);height:clamp(10px,2.8vw,18px);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #0007,0 2px 3px #0006;animation:hop .4s}
+@keyframes hop{50%{transform:translateY(-10px)}}
+#mid{grid-area:2/2/7/7;background:var(--cr);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(3px,1.5vw,10px);padding:6px;text-align:center}
+#mid h2{margin:0;font-weight:800;font-size:clamp(15px,5.4vw,36px);color:var(--gr);line-height:1}
+#mid h2 span{display:block;color:var(--or);font-size:.65em}
+#turn{font-weight:800;font-size:clamp(11px,3.2vw,18px)}
+#msg{min-height:1.3em;font-weight:700;font-size:clamp(10px,2.8vw,15px);color:var(--or)}
+#dice{width:clamp(54px,16vw,100px);aspect-ratio:1;background:#fff;color:#0e3e28;border-radius:20%;display:grid;place-items:center;font-size:clamp(40px,12vw,76px);box-shadow:0 5px 0 #0004,inset 0 0 0 4px #e5e5e5}
+#dice.r{animation:sh .5s}@keyframes sh{20%{transform:rotate(-25deg) scale(1.1)}60%{transform:rotate(25deg) scale(1.1)}}
+#roll{font-size:clamp(13px,3.8vw,20px);padding:clamp(6px,2vw,12px) clamp(14px,4vw,28px)}
+#score{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px;max-width:640px}
+#score span{padding:6px 14px;border-radius:99px;color:#fff;font-weight:800;font-size:14px;box-shadow:0 3px 0 #0004}
+#score span.on{outline:4px solid var(--go);transform:scale(1.08)}
+.note{font-weight:700;font-size:12px;text-align:center;margin-top:12px;background:var(--cr);border-radius:99px;padding:5px 14px}
+dialog{border:6px solid var(--k,var(--gr));border-radius:28px;background:var(--cr);color:var(--ink);width:min(92vw,440px);padding:0;overflow:hidden;box-shadow:0 14px 50px #000a;font-family:inherit}
+dialog::backdrop{background:#000b}
+dialog .hd{background:var(--k,var(--gr));color:#fff;font-weight:800;font-size:20px;padding:12px 16px;display:flex;align-items:center;gap:10px}
+dialog .hd i{font-style:normal;background:#fff;color:var(--k);width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
+dialog .bd{padding:14px 18px 18px;text-align:center}
+dialog h3{margin:0;font-size:26px;font-weight:800;color:var(--k,var(--gr))}
+.em{font-size:64px;line-height:1.1}.pn{font-weight:700;margin:0 0 6px}
+.hint{background:var(--pa);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:13px;text-align:left;color:var(--dg)}
+.bon{display:inline-block;background:var(--go);color:#0e3e28;font-weight:800;border-radius:99px;padding:5px 18px;margin-top:6px}
+.pts{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:14px;text-align:left}td,th{border:1px solid #9db39a;padding:5px 8px}th{background:var(--gr);color:#fff}
+ol{text-align:left;font-size:14px;padding-left:20px}
+#nm label{display:flex;align-items:center;gap:8px;margin:6px 0}#nm input{flex:1;font:inherit;padding:7px 10px;border-radius:10px;border:2px solid #9db39a}
+.dot{width:18px;height:18px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #0007}
+select{font:inherit;padding:6px;border-radius:10px}
+.cf{position:fixed;top:-8vh;font-size:26px;z-index:99;pointer-events:none;animation:fall 3.5s linear forwards}
+@keyframes fall{to{transform:translateY(112vh) rotate(540deg)}}
+@media (max-width:520px){.c small{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<div class="ban"><small>EDUCATIONAL GAME</small><h1>Smartpoly</h1><em>Java Island Edition</em></div>
+<div class="bar"><button class="n" id="bH">How to play</button><button class="n" id="bV">Vocabulary</button><button class="o" id="bE">Finish game</button></div>
+<div id="board"></div>
+<div id="score"></div>
+<div class="note">Reuse the caps · Reduce plastic · Respect the Earth</div>
+
+<dialog id="dS" style="--k:var(--gr)"><div class="hd">Let’s play!</div><div class="bd"><p class="pn">How many teams?</p>
+<select id="n"><option>2</option><option selected>3</option><option>4</option><option>5</option></select><div id="nm"></div>
+<div class="pts"><button class="g" id="go">Start the game</button></div></div></dialog>
+<dialog id="dC"><div id="cb"></div></dialog>
+<dialog id="dI" style="--k:var(--gr)"><div id="ib" class="bd"></div><div class="pts" style="padding-bottom:16px"><button id="ix">Close</button></div></dialog>
+
+<script>
+const P=[["Borobudur Temple","🛕","History","It is located in Magelang, Central Java. It is famous for its big stupa.","temple"],
+["Prambanan Temple","🛕","History","A Hindu temple near Yogyakarta, famous for its tall towers.","ancient"],
+["Majapahit","🏯","History","A great ancient kingdom in East Java.","kingdom"],
+["Yogyakarta Palace","🏰","History","The home of the Sultan, famous for Javanese tradition.","traditional"],
+["Mount Bromo","🌋","Tourism","An active volcano in East Java, famous for its sunrise.","volcano"],
+["Malioboro","🛍️","Tourism","A busy street in Yogyakarta, famous for shopping and street food.","tourist"],
+["Ijen Crater","🏔️","Tourism","A crater with blue fire and a turquoise lake.","crater"],
+["Pangandaran","🏖️","Tourism","A beach in West Java, famous for sunset and waves.","tourist"],
+["Batik","👘","Culture","Cloth with beautiful wax patterns, loved around the world.","traditional"],
+["Shadow Puppets","🎭","Culture","Wayang kulit: stories told with shadows on a screen.","shadow puppet"],
+["Gamelan","🥁","Culture","Traditional music with gongs and metal instruments.","traditional"],
+["Angklung","🎋","Culture","A bamboo instrument from West Java.","traditional"],
+["Gudeg","🍛","Food","Sweet, soft young jackfruit from Yogyakarta.","delicious"],
+["Rawon","🍲","Food","A black beef soup from East Java.","delicious"],
+["Soto Betawi","🍜","Food","A creamy beef soup from Jakarta.","delicious"],
+["Klepon","🍡","Food","Green rice balls with palm sugar inside.","delicious"]];
+const V=[["temple","candi"],["ancient","kuno"],["kingdom","kerajaan"],["volcano","gunung berapi"],["crater","kawah"],["traditional","tradisional"],["costume","pakaian adat"],["shadow puppet","wayang kulit"],["delicious","lezat"],["tourist","wisatawan"]];
+const CH=[["","Picture Talk",p=>"Explain the picture in 3–4 sentences. Start with “This is…” and tell us what it is famous for."],
+["","Hidden Words",p=>`Describe it and use the new word “${p[4]}”.`],
+["Food","Taste Test",p=>"Make us hungry! Say why this food is delicious and where it comes from."],
+["Tourism","Tour Guide",p=>"Be a tour guide! Invite us to visit this place and tell us why."],
+["Culture","Culture Star",p=>"Tell us what it is and why Javanese people are proud of it."],
+["History","Time Traveler",p=>"Tell us where it is and what it was like long ago."]];
+const SU=[["Mystery Guest",p=>"Explain the picture WITHOUT saying its name. Your friends guess!",3],
+["Echo Time",p=>"Explain the picture, then pick a friend to repeat your best sentence.",2],
+["Lucky Turn",p=>"Explain the picture. Wow! You also get an extra turn.",1,1],
+["Word Boost",p=>`Teach us the word “${p[4]}” and use it in a sentence.`,2],
+["Green Hero",p=>"Name one way to reuse or reduce plastic. Then explain the picture.",1]];
+const COL=["#d62839","#1d70d6","#e6a700","#7b3fb5","#e8590c"];
+const INF={st:["START","Let’s roll!","🏁"],ch:["CHALLENGE","Show what you know!","?"],su:["SURPRISE","Open the mystery!","★"],pa:["PASS","Great job, keep going!","➜"],fi:["FINISH","You made it!","⚑"]};
+const T={0:"st",23:"fi",6:"ch",12:"su",18:"ch"},cyc=["pa","ch","pa","su"];let q=0;
+for(let i=0;i<24;i++)if(!T[i])T[i]=cyc[q++%4];
+const pos=i=>i<=6?[6,6-i]:i<=12?[12-i,0]:i<=18?[0,i-12]:[i-18,6];
+const $=id=>document.getElementById(id),rnd=a=>a[Math.random()*a.length|0];
+let pl=[],cur=0,busy=false,ex=false;
+const B=$("board");
+for(let i=0;i<24;i++){const[r,c]=pos(i),k=T[i],f=INF[k],d=document.createElement("div");
+d.className="c "+k;d.style.gridArea=`${r+1}/${c+1}`;d.id="c"+i;
+d.innerHTML=`<span class="ic">${f[2]}</span>${f[0]}<small>${f[1]}</small><span class="pw"></span>`;B.appendChild(d)}
+B.insertAdjacentHTML("beforeend",`<div id="mid"><h2>SMARTPOLY<span>JAVA</span></h2><div id="turn">Press Start</div><div id="dice">🎲</div><div id="msg"></div><button id="roll" class="o">ROLL THE DICE</button></div>`);
+function draw(){document.querySelectorAll(".pw").forEach(e=>e.innerHTML="");
+pl.forEach(p=>$("c"+p.pos).querySelector(".pw").insertAdjacentHTML("beforeend",`<i style="background:${p.col}"></i>`));
+$("score").innerHTML=pl.map((p,i)=>`<span class="${i==cur&&!p.done?"on":""}" style="background:${p.col}">${p.done?"🏁 ":""}${p.name}: ${p.s}</span>`).join("");
+if(pl.length)$("turn").textContent=pl[cur].name+"’s turn"}
+function mk(){$("nm").innerHTML=[...Array(+$("n").value)].map((_,i)=>`<label><i class="dot" style="background:${COL[i]}"></i><input value="Team ${i+1}" maxlength="14"></label>`).join("")}
+$("n").onchange=mk;mk();
+$("go").onclick=()=>{pl=[...$("nm").querySelectorAll("input")].map((x,i)=>({name:x.value.trim()||"Team "+(i+1),col:COL[i],pos:0,s:0,done:false}));cur=0;$("dS").close();draw()};
+function next(){busy=false;if(pl.every(p=>p.done))return end();
+if(ex&&!pl[cur].done){ex=false;draw();return}ex=false;do cur=(cur+1)%pl.length;while(pl[cur].done);draw()}
+function card(k,col,lab,ic,title,p,body,bon,opts){const d=$("dC");d.style.setProperty("--k",col);
+$("cb").innerHTML=`<div class="hd"><i>${ic}</i>${lab}</div><div class="bd"><h3>${title}</h3>${p?`<div class="em">${p[1]}</div><p class="pn">${p[0]}</p>`:""}<p>${body}</p>${p?`<div class="hint"><b>Use:</b> This is… · It is located in… · It is famous for… · I like it because…<br><b>Tip:</b> ${p[3]}</div>`:""}${bon?`<span class="bon">${bon}</span>`:""}<div class="pts">${opts.map(o=>`<button class="${o[1]}" data-p="${o[0]}">${o[2]}</button>`).join("")}</div></div>`;
+$("cb").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{d.close();pl[cur].s+=+b.dataset.p;next()});d.showModal()}
+function land(){const p=pl[cur],k=T[p.pos];
+if(k=="pa"){$("msg").textContent="PASS! Great job, keep going!";setTimeout(()=>{$("msg").textContent="";next()},1100)}
+else if(k=="ch"){const pic=rnd(P),t=rnd(CH.filter(x=>!x[0]||x[0]==pic[2]));
+card(k,"#b5470f","CHALLENGE CARD","?",t[1],pic,t[2](pic),"Bonus: +2 points",[[0,"n","Try again next turn"],[2,"g","Great answer! +2"]])}
+else if(k=="su"){const pic=rnd(P),s=rnd(SU);ex=!!s[3];
+card(k,"#165c38","SURPRISE CARD","★",s[0],pic,s[1](pic),"Gift: +"+s[2]+(s[3]?" point and roll again":" points"),[[0,"n","Skip"],[s[2],"g","Got it! +"+s[2]]])}
+else if(k=="fi"){p.done=true;p.s+=5;conf();card(k,"#c9a227","FINISH!","⚑","You made it!",null,p.name+" crossed the finish line!","Finish bonus: +5 points",[[0,"g","Awesome!"]])}
+else next()}
+$("roll").onclick=()=>{if(busy||!pl.length)return;busy=true;const d=$("dice"),v=1+(Math.random()*6|0);
+d.classList.remove("r");void d.offsetWidth;d.classList.add("r");d.textContent=["⚀","⚁","⚂","⚃","⚄","⚅"][v-1];
+let n=Math.min(v,23-pl[cur].pos);const t=setInterval(()=>{pl[cur].pos++;draw();if(--n<=0){clearInterval(t);setTimeout(land,350)}},260)};
+function conf(){for(let i=0;i<40;i++){const s=document.createElement("span");s.className="cf";s.textContent=rnd(["🎉","⭐","🟡","🟢","✨"]);s.style.left=Math.random()*100+"vw";s.style.animationDelay=Math.random()*1.5+"s";document.body.appendChild(s);setTimeout(()=>s.remove(),5500)}}
+function end(){if(!pl.length)return;const m=Math.max(...pl.map(p=>p.s)),w=pl.filter(p=>p.s==m).map(p=>p.name).join(" & ");conf();
+$("ib").innerHTML=`<h3 style="font-size:24px;color:var(--gr)">🏆 Winner: ${w}</h3><table>${[...pl].sort((a,b)=>b.s-a.s).map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.s} pts</td></tr>`).join("")}</table><div class="pts"><button class="o" onclick="location.reload()">Play again</button></div>`;$("dI").showModal()}
+$("bH").onclick=()=>{$("ib").innerHTML=`<h3 style="color:var(--gr)">How to play</h3><ol><li>Form groups of 4–5 students. Each picks a bottle-cap pawn.</li><li>Take turns rolling the dice and moving your pawn.</li><li>PASS: great job, keep going!</li><li>CHALLENGE or SURPRISE: draw a card and explain the picture in English.</li><li>Friends and the teacher give points. Reach FINISH for +5 bonus!</li><li>Most points wins.</li></ol><div class="hint"><b>Scoring:</b> Challenge +2 · Surprise +1 to +3 · Can’t answer? 0 points, no penalty. Try again next turn!</div>`;$("dI").showModal()};
+$("bV").onclick=()=>{$("ib").innerHTML=`<h3 style="color:var(--gr)">Target vocabulary</h3><table><tr><th>English</th><th>Indonesian</th></tr>${V.map(v=>`<tr><td>${v[0]}</td><td>${v[1]}</td></tr>`).join("")}</table>`;$("dI").showModal()};
+$("bE").onclick=end;$("ix").onclick=()=>$("dI").close();
+$("dC").addEventListener("cancel",e=>e.preventDefault());
+$("dS").addEventListener("cancel",e=>e.preventDefault());
+$("dS").showModal();
+</script></body></html>
